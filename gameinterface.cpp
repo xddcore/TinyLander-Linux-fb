@@ -22,9 +22,7 @@
 // the code works at 16MHZ internal
 // and use ssd1306xled Library for SSD1306 oled display 128x64
 
-#include <Arduino.h>
 #include "gameinterface.h"
-#include <ssd1306xled.h>
 
 void TINYJOYPAD_INIT(void) {
   pinMode(1, INPUT);

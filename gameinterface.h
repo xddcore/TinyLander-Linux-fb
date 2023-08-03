@@ -22,6 +22,9 @@
 // the code works at 16MHZ internal
 // and use ssd1306xled Library for SSD1306 oled display 128x64
 
+typedef uint8_t unsigned char
+typedef uint16_t unsigned int
+
 #define NUMOFGAMES 10
 #define VLimit 100
 #define MoveY 35
