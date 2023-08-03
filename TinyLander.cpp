@@ -380,21 +380,32 @@ uint8_t LivesDisplay(uint8_t x, uint8_t y, GAME * game)
   return 0x00;
 }
 
+void Frame_Buffer_Flip(uint8_t x , uint8_t y, uint8_t data)
+{
+    
+    //一次给一竖列8bit数据
+     for (y_pixel = 0; y_pixel < 8; y_pixel++)//解析为单个y_pixel
+    {
+        uint8_t data_pixel = (data>>y_pixel)&0x01;
+        long location = (x * 2) + (((y * 8)+y_pixel) * 640);
+        if(data_pixel==1)//此像素点应该被点亮
+        *((unsigned short *)(fbp + location))= 0xff;//rgb565 fb
+    } 
+}
 void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGITAL * velY) {
   uint8_t y, x;
   for (y = 0; y < 8; y++)
   {
     for (x = 0; x < 128; x++)
     {
-      long location = (x * 2) + (y * 640);
       if (mode == 0) {
-        *((unsigned short *)(fbp + location)) = GameDisplay(x, y, game) | LivesDisplay(x, y, game) | DashboardDisplay(x, y, game) | ScoreDisplay(x, y, score) | VelocityDisplay(x, y, velX, 1) | VelocityDisplay(x, y, velY, 0) | FuelDisplay(x, y, game);
+        Frame_Buffer_Flip(x, y, GameDisplay(x, y, game) | LivesDisplay(x, y, game) | DashboardDisplay(x, y, game) | ScoreDisplay(x, y, score) | VelocityDisplay(x, y, velX, 1) | VelocityDisplay(x, y, velY, 0) | FuelDisplay(x, y, game));
       } else if (mode == 1) {
-         *((unsigned short *)(fbp + location)) = INTRO[x + (y * 128)];
+        Frame_Buffer_Flip(x, y, INTRO[x + (y * 128)]);
       }
       else if (mode == 2)
       {
-        *((unsigned short *)(fbp + location)) = StarsDisplay ( x, y, game) | LivesDisplay(x, y, game) | DashboardDisplay(x, y, game) | ScoreDisplay(x, y, score) | VelocityDisplay(x, y, velX, 1) | VelocityDisplay(x, y, velY, 0) | FuelDisplay(x, y, game);
+        Frame_Buffer_Flip(x, y, StarsDisplay ( x, y, game) | LivesDisplay(x, y, game) | DashboardDisplay(x, y, game) | ScoreDisplay(x, y, score) | VelocityDisplay(x, y, velX, 1) | VelocityDisplay(x, y, velY, 0) | FuelDisplay(x, y, game));
       }
     }
     if (mode == 0 || mode == 2) {
