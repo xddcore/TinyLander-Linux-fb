@@ -29,6 +29,7 @@
 #include <linux/fb.h>
 #include <sys/mman.h>
 #include <stdio.h>
+#include <math.h>
 
 #include "spritebank.h"
 #include "gameinterface.h"
@@ -380,8 +381,8 @@ void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGIT
   {
     for (x = 0; x < 128; x++)
     {
+      long location = (x * 2) + (y * 640);
       if (mode == 0) {
-        long location = (x * 2) + (y * 640);
         *((unsigned short *)(fbp + location)) = GameDisplay(x, y, game) | LivesDisplay(x, y, game) | DashboardDisplay(x, y, game) | ScoreDisplay(x, y, score) | VelocityDisplay(x, y, velX, 1) | VelocityDisplay(x, y, velY, 0) | FuelDisplay(x, y, game);
       } else if (mode == 1) {
          *((unsigned short *)(fbp + location)) = &INTRO[x + (y * 128)];
@@ -417,7 +418,7 @@ BEGIN:
   game.Lives = 4;
   while (1) {
     Tiny_Flip(1, &game, &score, &velX, &velY);
-    if (digitalRead(1) == 0) {
+    if (0) {//开始游戏按钮 digitalRead(1) == 0
       if (JOYPAD_UP){ 
         game.Level = 10;
         //ALERTSOUND();
@@ -469,7 +470,7 @@ START:
   }
 }
 
-void main()
+int main()
 {
     fbfd = open("/dev/fb0", O_RDWR);
     if (fbfd == -1) {
