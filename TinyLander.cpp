@@ -383,8 +383,8 @@ uint8_t LivesDisplay(uint8_t x, uint8_t y, GAME * game)
 void Frame_Buffer_Clear()
 {
     // Clear the screen in RGB565 format
-    for (int y = 0; y < 64; y++) {
-        for (int x = 0; x < 128; x++) {
+    for (int y = 0; y < 128; y++) {
+        for (int x = 0; x < 256; x++) {
             long location = (x * 2) + (y * 640); // 2 bytes per pixel, 640 bytes per line
             *((unsigned short *)(fbp + location)) = 0x0000;
         }
@@ -397,9 +397,11 @@ void Frame_Buffer_Flip(uint8_t x , uint8_t y, uint8_t data)
      for (uint8_t y_pixel = 0; y_pixel < 8; y_pixel++)//解析为单个y_pixel
     {
         uint8_t data_pixel = (data>>y_pixel)&0x01;
-        long location = (x * 2) + (((y * 8)+y_pixel) * 640);
+        long location = (x * 2 * 2) + (((y * 8)+y_pixel * 2) * 640);
         if(data_pixel==1)//此像素点应该被点亮
+        //等比例放大2倍，
         *((unsigned short *)(fbp + location))= 0xff;//rgb565 fb
+        *((unsigned short *)(fbp + location+1))= 0xff;//rgb565 fb
     } 
 }
 void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGITAL * velY) {
