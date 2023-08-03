@@ -383,8 +383,8 @@ uint8_t LivesDisplay(uint8_t x, uint8_t y, GAME * game)
 void Frame_Buffer_Clear()
 {
     // Clear the screen in RGB565 format
-    for (int y = 0; y < 240; y++) {
-        for (int x = 0; x < 320; x++) {
+    for (int y = 0; y < 64; y++) {
+        for (int x = 0; x < 128; x++) {
             long location = (x * 2) + (y * 640); // 2 bytes per pixel, 640 bytes per line
             *((unsigned short *)(fbp + location)) = 0x0000;
         }
