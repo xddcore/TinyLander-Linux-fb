@@ -34,9 +34,9 @@
 #include "gameinterface.h"
 
 /*framebuffer*/
+int fbfd;
 char *fbp=NULL;
-typedef uint8_t unsigned char
-typedef uint16_t unsigned int
+int screensize;
 
 void delay(unsigned int us)
 {
@@ -471,7 +471,7 @@ void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGIT
 
 void main()
 {
-    int fbfd = open("/dev/fb0", O_RDWR);
+    fbfd = open("/dev/fb0", O_RDWR);
     if (fbfd == -1) {
         perror("Error opening framebuffer device");
         return 1;
@@ -492,7 +492,7 @@ void main()
         return 1;
     }
 
-    int screensize = finfo.line_length * 240; // 640 bytes per line, 240 lines
+    screensize = finfo.line_length * 240; // 640 bytes per line, 240 lines
 
     fbp = (char *)mmap(0, screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd, 0);
     if ((intptr_t)fbp == -1) {

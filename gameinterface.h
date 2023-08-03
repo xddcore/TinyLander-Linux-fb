@@ -59,7 +59,7 @@ void HAPPYSOUND(void);
 void SPLITDIGITS(uint16_t val, uint8_t *digits);
 
 // GameLevel: Level, ShipPosX, ShipPosY, Fuel / 100, LevelScore, FuelBonus
-const uint8_t GAMELEVEL [][5] PROGMEM = {
+const uint8_t GAMELEVEL [][5]= {
   {44, 33, 150, 10, 75},   // entry-level (L1)
   {110, 33, 150, 20, 75},  // canyon (L2)
   {34, 30, 150, 20, 50},   // b-level (L1)
@@ -73,7 +73,7 @@ const uint8_t GAMELEVEL [][5] PROGMEM = {
 };
 
 // GameMap
-const uint8_t GAMEMAP [][27] PROGMEM = {
+const uint8_t GAMEMAP [][27]= {
   // entry-level (1)
   {63, 44, 32, 22, 12, 6, 4, 6, 10, 18, 16, 20, 12, 36, 38, 30, 28, 26, 10, 2, 0, 0, 0, 2, 10, 28, 40},
   {63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63,  63,  63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63},
