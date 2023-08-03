@@ -142,3 +142,24 @@ void HAPPYSOUND()
 {
   //SOUND(75, 90); _delay_ms(10); SOUND(114, 90); SOUND(121, 90);
 }
+
+/*触摸屏事件接口*/
+int check_touch() {
+    int fd = open(Touch_Screen_Event, O_RDONLY | O_NONBLOCK);
+    if (fd == -1) {
+        perror("Error opening touch device");
+        return -1;
+    }
+
+    struct input_event ev;
+    ssize_t n = read(fd, &ev, sizeof(ev));
+    close(fd);
+
+    if (n == sizeof(ev)) {
+        if (ev.type == EV_ABS && (ev.code == ABS_MT_POSITION_X || ev.code == ABS_MT_POSITION_Y)) {
+            return 1; // 触摸事件
+        }
+    }
+
+    return 0; // 没有触摸事件
+}

@@ -49,7 +49,7 @@ typedef unsigned int uint16_t;
 #define JOYPAD_RIGHT 0//(analogRead(A0)>500)&&(analogRead(A0)<750)
 #define JOYPAD_DOWN 0//(analogRead(A3)>=750)&&(analogRead(A3)<950)
 #define JOYPAD_UP  0//(analogRead(A3)>500)&&(analogRead(A3)<750)
-#define JOYPAD_FIRE 0//(digitalRead(1)==0)
+#define JOYPAD_FIRE check_touch()//(digitalRead(1)==0)
 
 void SOUND(uint8_t freq_, uint8_t dur);
 void TINYJOYPAD_INIT(void);
@@ -58,6 +58,7 @@ void VICTORYSOUND(void);
 void ALERTSOUND(void);
 void HAPPYSOUND(void);
 void SPLITDIGITS(uint16_t val, uint8_t *digits);
+int check_touch();
 
 // GameLevel: Level, ShipPosX, ShipPosY, Fuel / 100, LevelScore, FuelBonus
 const uint8_t GAMELEVEL [][5]= {
