@@ -39,6 +39,11 @@ int fbfd;
 char *fbp=NULL;
 int screensize;
 
+void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGITAL * velY);
+void fillData(long myValue, DIGITAL * data);
+uint8_t getLanderSprite(uint8_t x, uint8_t y, GAME * game);
+
+
 void delay(unsigned int us)
 {
     usleep(us * 1000);
@@ -385,7 +390,7 @@ void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGIT
       if (mode == 0) {
         *((unsigned short *)(fbp + location)) = GameDisplay(x, y, game) | LivesDisplay(x, y, game) | DashboardDisplay(x, y, game) | ScoreDisplay(x, y, score) | VelocityDisplay(x, y, velX, 1) | VelocityDisplay(x, y, velY, 0) | FuelDisplay(x, y, game);
       } else if (mode == 1) {
-         *((unsigned short *)(fbp + location)) = &INTRO[x + (y * 128)];
+         *((unsigned short *)(fbp + location)) = INTRO[x + (y * 128)];
       }
       else if (mode == 2)
       {
