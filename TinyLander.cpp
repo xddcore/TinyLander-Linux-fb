@@ -397,8 +397,8 @@ void Frame_Buffer_Flip(uint8_t x , uint8_t y, uint8_t data)
      for (uint8_t y_pixel = 0; y_pixel < 8; y_pixel++)//解析为单个y_pixel
     {
         uint8_t data_pixel = (data>>y_pixel)&0x01;
-        long location1 = (x * 2 * 2) + (((y * 8 * 2)+y_pixel) * 640);
-        long location2 = (x * 2 * 2 + 1) + (((y * 8 * 2 + 1)+y_pixel) * 640);
+        long location1 = (x * 2 * 2) + ((( (y * 8) + y_pixel) * 2 ) * 640);
+        long location2 = (x * 2 * 2 + 1) + ((((y * 8)+y_pixel) * 2 + 1 ) * 640);
         if(data_pixel==1)//此像素点应该被点亮
         //等比例放大2倍
         {
