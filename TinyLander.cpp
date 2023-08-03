@@ -42,7 +42,7 @@ int screensize;
 void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGITAL * velY);
 void fillData(long myValue, DIGITAL * data);
 uint8_t getLanderSprite(uint8_t x, uint8_t y, GAME * game);
-
+void Frame_Buffer_Clear();//FB清屏(切换界面后)
 
 void delay(unsigned int us)
 {
@@ -380,6 +380,17 @@ uint8_t LivesDisplay(uint8_t x, uint8_t y, GAME * game)
   return 0x00;
 }
 
+void Frame_Buffer_Clear()
+{
+    // Clear the screen in RGB565 format
+    for (int y = 0; y < 240; y++) {
+        for (int x = 0; x < 320; x++) {
+            long location = (x * 2) + (y * 640); // 2 bytes per pixel, 640 bytes per line
+            *((unsigned short *)(fbp + location)) = 0x0000;
+        }
+    }
+}
+
 void Frame_Buffer_Flip(uint8_t x , uint8_t y, uint8_t data)
 {
     //一次给一竖列8bit数据
@@ -433,6 +444,7 @@ BEGIN:
   game.Lives = 4;
   while (1) {
     Tiny_Flip(1, &game, &score, &velX, &velY);
+    delay(2000);//测试时候延迟一会儿，正常来说可以把这行ban掉
     if (1) {//开始游戏按钮 digitalRead(1) == 0
       if (JOYPAD_UP){ 
         game.Level = 10;
@@ -452,6 +464,7 @@ BEGIN:
   }
 
 START:
+  Frame_Buffer_Clear();
   initGame(&game);
   //INTROSOUND();
   while (1) {
