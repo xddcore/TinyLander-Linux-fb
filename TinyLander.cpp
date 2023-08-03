@@ -68,7 +68,7 @@ void initGame (GAME * game)
 
 void showAllScoresAndBonuses(GAME *game, DIGITAL *score, DIGITAL *velX, DIGITAL *velY)
 {
-  VICTORYSOUND();
+  //VICTORYSOUND();
   game->Level++;
   delay (1000);
   uint8_t bonusPoints = 0;
@@ -84,7 +84,7 @@ void showAllScoresAndBonuses(GAME *game, DIGITAL *score, DIGITAL *velX, DIGITAL 
   for (game->Stars = 1; game->Stars <= bonusPoints; game->Stars++)
   {
     Tiny_Flip(2, game, score, velX, velY);
-    HAPPYSOUND();
+    //HAPPYSOUND();
     delay(500);
   }
   game->Stars--;
@@ -382,7 +382,6 @@ uint8_t LivesDisplay(uint8_t x, uint8_t y, GAME * game)
 
 void Frame_Buffer_Flip(uint8_t x , uint8_t y, uint8_t data)
 {
-    
     //一次给一竖列8bit数据
      for (uint8_t y_pixel = 0; y_pixel < 8; y_pixel++)//解析为单个y_pixel
     {
@@ -434,7 +433,7 @@ BEGIN:
   game.Lives = 4;
   while (1) {
     Tiny_Flip(1, &game, &score, &velX, &velY);
-    if (0) {//开始游戏按钮 digitalRead(1) == 0
+    if (1) {//开始游戏按钮 digitalRead(1) == 0
       if (JOYPAD_UP){ 
         game.Level = 10;
         //ALERTSOUND();
