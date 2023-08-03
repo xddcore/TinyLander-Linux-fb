@@ -64,7 +64,7 @@ void SETNEXTLEVEL(uint8_t level, GAME *game)
   game->ShipPosY = GAMELEVEL[level - 1][1];
   game->Fuel = 100 * GAMELEVEL[level - 1][2];
   game->LevelScore = GAMELEVEL[level - 1][3];
-  game->FuelBonus = 100 * &GAMELEVEL[level - 1][4];
+  game->FuelBonus = 100 * GAMELEVEL[level - 1][4];
 }
 
 uint8_t GETLANDSCAPE(uint8_t x, uint8_t y, uint8_t level, GAME *game)

@@ -42,75 +42,6 @@ void delay(unsigned int us)
 {
     usleep(us * 1000);
 }
-void setup() {
-  SSD1306.ssd1306_init();
-  SSD1306.ssd1306_fillscreen(0x00);
-  TINYJOYPAD_INIT();
-}
-
-void loop() {
-  DIGITAL score;
-  DIGITAL velX;
-  DIGITAL velY;
-  GAME game;
-
-BEGIN:
-  game.Level = 1;
-  game.Score = 0;
-  game.Lives = 4;
-  while (1) {
-    Tiny_Flip(1, &game, &score, &velX, &velY);
-    if (digitalRead(1) == 0) {
-      if (JOYPAD_UP){ 
-        game.Level = 10;
-        //ALERTSOUND();
-      }
-      else if (JOYPAD_DOWN) {
-        game.Lives = 255;
-        //ALERTSOUND();
-      }
-      else {
-        //SOUND(100, 125);
-        //SOUND(50, 125);
-      }
-
-      goto START;
-    }
-  }
-
-START:
-  initGame(&game);
-  //INTROSOUND();
-  while (1) {
-    fillData(game.Score, &score);
-    fillData(game.velocityX, &velX);
-    fillData(game.velocityY, &velY);
-    moveShip(&game);
-    changeSpeed(&game);
-
-    Tiny_Flip(0, &game, &score, &velX, &velY);
-    if (game.EndCounter > 8) {
-      if (game.HasLanded)
-      {
-        showAllScoresAndBonuses(&game, &score, &velX, &velY);
-        delay(500);
-        goto START;
-      }
-      else
-      {
-        delay (2000);
-        if (game.Lives > 0)
-          goto START;
-        goto BEGIN;
-      }
-
-    }
-    if (game.ShipExplode > 0 || game.Collision)
-      game.EndCounter++;
-    if (game.HasLanded)
-      game.EndCounter = 10;
-  }
-}
 
 
 void initGame (GAME * game)
@@ -467,7 +398,76 @@ void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGIT
   }
 }
 
+/**************************/
+void setup() {
+  //SSD1306.ssd1306_init();
+  //SSD1306.ssd1306_fillscreen(0x00);
+  //TINYJOYPAD_INIT();
+}
 
+void loop() {
+  DIGITAL score;
+  DIGITAL velX;
+  DIGITAL velY;
+  GAME game;
+
+BEGIN:
+  game.Level = 1;
+  game.Score = 0;
+  game.Lives = 4;
+  while (1) {
+    Tiny_Flip(1, &game, &score, &velX, &velY);
+    if (digitalRead(1) == 0) {
+      if (JOYPAD_UP){ 
+        game.Level = 10;
+        //ALERTSOUND();
+      }
+      else if (JOYPAD_DOWN) {
+        game.Lives = 255;
+        //ALERTSOUND();
+      }
+      else {
+        //SOUND(100, 125);
+        //SOUND(50, 125);
+      }
+
+      goto START;
+    }
+  }
+
+START:
+  initGame(&game);
+  //INTROSOUND();
+  while (1) {
+    fillData(game.Score, &score);
+    fillData(game.velocityX, &velX);
+    fillData(game.velocityY, &velY);
+    moveShip(&game);
+    changeSpeed(&game);
+
+    Tiny_Flip(0, &game, &score, &velX, &velY);
+    if (game.EndCounter > 8) {
+      if (game.HasLanded)
+      {
+        showAllScoresAndBonuses(&game, &score, &velX, &velY);
+        delay(500);
+        goto START;
+      }
+      else
+      {
+        delay (2000);
+        if (game.Lives > 0)
+          goto START;
+        goto BEGIN;
+      }
+
+    }
+    if (game.ShipExplode > 0 || game.Collision)
+      game.EndCounter++;
+    if (game.HasLanded)
+      game.EndCounter = 10;
+  }
+}
 
 void main()
 {
@@ -506,4 +506,5 @@ void main()
     {
         loop();
     }
+    return 0;
 }

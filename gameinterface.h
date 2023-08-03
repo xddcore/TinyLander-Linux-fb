@@ -44,11 +44,12 @@ typedef unsigned int uint16_t;
 #define VELODIGITS 4
 #define VELOOFFSET 5
 
-#define JOYPAD_LEFT  (analogRead(A0)>=750)&&(analogRead(A0)<950)
-#define JOYPAD_RIGHT (analogRead(A0)>500)&&(analogRead(A0)<750)
-#define JOYPAD_DOWN (analogRead(A3)>=750)&&(analogRead(A3)<950)
-#define JOYPAD_UP  (analogRead(A3)>500)&&(analogRead(A3)<750)
-#define JOYPAD_FIRE (digitalRead(1)==0)
+/************控制接口***************/
+#define JOYPAD_LEFT  0//(analogRead(A0)>=750)&&(analogRead(A0)<950)
+#define JOYPAD_RIGHT 0//(analogRead(A0)>500)&&(analogRead(A0)<750)
+#define JOYPAD_DOWN 0//(analogRead(A3)>=750)&&(analogRead(A3)<950)
+#define JOYPAD_UP  0//(analogRead(A3)>500)&&(analogRead(A3)<750)
+#define JOYPAD_FIRE 0//(digitalRead(1)==0)
 
 void SOUND(uint8_t freq_, uint8_t dur);
 void TINYJOYPAD_INIT(void);
