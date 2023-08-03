@@ -408,8 +408,8 @@ void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGIT
       }
     }
     if (mode == 0 || mode == 2) {
-        munmap(fbp, screensize);
-        close(fbfd);
+        //munmap(fbp, screensize);
+        //close(fbfd);
     }
   }
 }
