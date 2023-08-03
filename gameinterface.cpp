@@ -156,7 +156,7 @@ int check_touch() {
     close(fd);
 
     if (n == sizeof(ev)) {
-        if (ev.type == EV_ABS && (ev.code == ABS_MT_POSITION_X || ev.code == ABS_MT_POSITION_Y)) {
+        if (ev.type == EV_ABS) {
             return 1; // 触摸事件
         }
     }
