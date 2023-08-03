@@ -21,6 +21,10 @@
 //             
 // the code works at 16MHZ internal
 // and use ssd1306xled Library for SSD1306 oled display 128x64
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <linux/input.h>
 
 typedef unsigned char uint8_t;
 typedef unsigned int uint16_t;
@@ -45,6 +49,8 @@ typedef unsigned int uint16_t;
 #define VELOOFFSET 5
 
 /************控制接口***************/
+#define Touch_Screen_Event "/dev/input/event0"
+
 #define JOYPAD_LEFT  0//(analogRead(A0)>=750)&&(analogRead(A0)<950)
 #define JOYPAD_RIGHT 0//(analogRead(A0)>500)&&(analogRead(A0)<750)
 #define JOYPAD_DOWN 0//(analogRead(A3)>=750)&&(analogRead(A3)<950)
