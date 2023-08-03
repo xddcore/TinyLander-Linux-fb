@@ -439,6 +439,7 @@ void loop() {
   GAME game;
 
 BEGIN:
+  Frame_Buffer_Clear();//进入界面的时候刷新一下界面
   game.Level = 1;
   game.Score = 0;
   game.Lives = 4;
@@ -464,7 +465,7 @@ BEGIN:
   }
 
 START:
-  Frame_Buffer_Clear();
+  Frame_Buffer_Clear();//进入界面的时候刷新一下界面
   initGame(&game);
   //INTROSOUND();
   while (1) {
@@ -472,6 +473,7 @@ START:
     fillData(game.velocityX, &velX);
     fillData(game.velocityY, &velY);
     moveShip(&game);
+    Frame_Buffer_Clear();//每次移动飞船后都要刷新一下界面
     changeSpeed(&game);
 
     Tiny_Flip(0, &game, &score, &velX, &velY);
