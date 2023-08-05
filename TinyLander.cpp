@@ -451,8 +451,7 @@ BEGIN:
   game.Lives = 4;
   while (1) {
     Tiny_Flip(1, &game, &score, &velX, &velY);
-    delay(2000);//测试时候延迟一会儿，正常来说可以把这行ban掉
-    if (1) {//开始游戏按钮 digitalRead(1) == 0
+    if (Space_key_pressed) {//开始游戏按钮 digitalRead(1) == 0
       if (JOYPAD_UP){ 
         game.Level = 10;
         //ALERTSOUND();
@@ -476,11 +475,11 @@ START:
   //INTROSOUND();
   while (1) {
     Keyboard_Event();
+    //Frame_Buffer_Clear();//每次移动飞船后都要刷新一下界面
     fillData(game.Score, &score);
     fillData(game.velocityX, &velX);
     fillData(game.velocityY, &velY);
     moveShip(&game);
-    Frame_Buffer_Clear();//每次移动飞船后都要刷新一下界面
     changeSpeed(&game);
 
     Tiny_Flip(0, &game, &score, &velX, &velY);
