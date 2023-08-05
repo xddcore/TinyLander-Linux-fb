@@ -176,7 +176,8 @@ int Keyboard_Init()
 
 int Keyboard_Event(int event_type)
 {
-  read(fd, &ev, sizeof(struct input_event));
+  struct input_event ev;
+  read(key_board_fb, &ev, sizeof(struct input_event));
 
   if (ev.type == EV_KEY) {
     if (ev.value == 1) { // Key pressed
@@ -197,5 +198,7 @@ int Keyboard_Event(int event_type)
           printf("Space key pressed\n");
           break;
       }
+    }
+  }
   return 0;
 }
