@@ -381,6 +381,7 @@ uint8_t LivesDisplay(uint8_t x, uint8_t y, GAME * game)
   return 0x00;
 }
 
+//全屏清除，速度慢，会闪屏
 void Frame_Buffer_Clear()
 {
     // Clear the screen in RGB565 format
@@ -390,6 +391,12 @@ void Frame_Buffer_Clear()
             *((unsigned short *)(fbp + location)) = 0x0000;
         }
     }
+}
+
+//静态部分保留，动态部分清除
+void Frame_Buffer_Clear_Part()
+{
+
 }
 
 void Frame_Buffer_Flip(uint8_t x , uint8_t y, uint8_t data)
@@ -427,6 +434,7 @@ void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGIT
     if (mode == 0 || mode == 2) {
         //munmap(fbp, screensize);
         //close(fbfd);
+        Frame_Buffer_Clear();
     }
   }
 }
@@ -445,7 +453,7 @@ void loop() {
   GAME game;
 
 BEGIN:
-  Frame_Buffer_Clear();//进入界面的时候刷新一下界面
+  //Frame_Buffer_Clear();//进入界面的时候刷新一下界面
   game.Level = 1;
   game.Score = 0;
   game.Lives = 4;
@@ -471,7 +479,7 @@ BEGIN:
   }
 
 START:
-  Frame_Buffer_Clear();//进入界面的时候刷新一下界面
+  //Frame_Buffer_Clear();//进入界面的时候刷新一下界面
   initGame(&game);
   //INTROSOUND();
   while (1) {
@@ -481,9 +489,9 @@ START:
     fillData(game.velocityY, &velY);
     moveShip(&game);
     changeSpeed(&game);
-    Frame_Buffer_Clear();//每次移动飞船后都要刷新一下界面
+    //Frame_Buffer_Clear();//每次移动飞船后都要刷新一下界面
     Tiny_Flip(0, &game, &score, &velX, &velY);
-    delay(25);
+    delay(50);
     if (game.EndCounter > 8) {
       if (game.HasLanded)
       {
