@@ -24,6 +24,8 @@
 
 #include "gameinterface.h"
 
+int key_board_fb=-1;
+
 void TINYJOYPAD_INIT(void) {
 
 }
