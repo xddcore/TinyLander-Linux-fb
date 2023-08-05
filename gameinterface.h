@@ -56,13 +56,13 @@ typedef unsigned int uint16_t;
 
 int Keyboard_Init();
 int check_touch();
-void Keyboard_Event()
+void Keyboard_Event();
 int isSpaceKeyPressed();
 
 
-extern int A_key_pressed;
-extern int D_key_pressed;
-extern int Space_key_pressed;
+int A_key_pressed;
+int D_key_pressed;
+int Space_key_pressed;
 
 #define JOYPAD_LEFT  A_key_pressed//(analogRead(A0)>=750)&&(analogRead(A0)<950)
 #define JOYPAD_RIGHT D_key_pressed//(analogRead(A0)>500)&&(analogRead(A0)<750)
