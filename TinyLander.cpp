@@ -457,7 +457,7 @@ BEGIN:
         game.Level = 10;
         //ALERTSOUND();
       }
-      else if (JOYPAD_DOWN) {
+      else if (1) {
         game.Lives = 255;
         //ALERTSOUND();
       }
