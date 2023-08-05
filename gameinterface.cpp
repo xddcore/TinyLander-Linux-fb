@@ -184,7 +184,6 @@ void Keyboard_Event()
     int fd = open(KEYBOARD_DEVICE, O_RDONLY);
     if (fd == -1) {
       perror("Error opening keyboard device");
-      return -1;
     }
     struct input_event ev;
 
@@ -229,7 +228,7 @@ void Keyboard_Event()
       Space_key_pressed=0;
     }
 
-    close(fb);
+    close(fd);
 
 
 }
