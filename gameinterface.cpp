@@ -163,3 +163,39 @@ int check_touch() {
 
     return 0; // 没有触摸事件
 }
+
+int Keyboard_Init()
+{
+    int fd = open(KEYBOARD_DEVICE, O_RDONLY);
+    if (fd == -1) {
+        perror("Error opening keyboard device");
+        return -1;
+    }
+    return fd;
+}
+
+int Keyboard_Event(int event_type)
+{
+  read(fd, &ev, sizeof(struct input_event));
+
+  if (ev.type == EV_KEY) {
+    if (ev.value == 1) { // Key pressed
+      switch (ev.code) {
+        case KEY_A:
+          if(event_type == 1)
+           return 1;
+          printf("A key pressed\n");
+          break;
+        case KEY_D:
+          if(event_type == 2)
+          return 1;
+          printf("D key pressed\n");
+          break;
+        case KEY_SPACE:
+          if(event_type == 3)
+          return 1;
+          printf("Space key pressed\n");
+          break;
+      }
+  return 0;
+}

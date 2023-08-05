@@ -2,7 +2,7 @@
  * @Author: Chengsen Dong 1034029664@qq.com
  * @Date: 2023-08-03 13:23:03
  * @LastEditors: Chengsen Dong 1034029664@qq.com
- * @LastEditTime: 2023-08-03 17:40:18
+ * @LastEditTime: 2023-08-05 09:52:57
  * @FilePath: /TinyLander-Linux-fb/README.md
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -34,3 +34,8 @@ g++ -o TinyLander gameinterface.cpp TinyLander.cpp
 ```
 ./TinyLander
 ```
+
+外设测试:
+键盘
+gcc -o Keyboard_Test Keyboard_Test.c
+./Keyboard_Test

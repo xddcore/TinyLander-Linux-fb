@@ -48,14 +48,22 @@ typedef unsigned int uint16_t;
 #define VELODIGITS 4
 #define VELOOFFSET 5
 
+
+
 /************控制接口***************/
 #define Touch_Screen_Event "/dev/input/event0"
+#define KEYBOARD_DEVICE "/dev/input/event1"
 
-#define JOYPAD_LEFT  0//(analogRead(A0)>=750)&&(analogRead(A0)<950)
-#define JOYPAD_RIGHT 0//(analogRead(A0)>500)&&(analogRead(A0)<750)
+int Keyboard_Init();
+int check_touch();
+int Keyboard_Event(int event_type);
+
+
+#define JOYPAD_LEFT  Keyboard_Event(1)//(analogRead(A0)>=750)&&(analogRead(A0)<950)
+#define JOYPAD_RIGHT Keyboard_Event(2)//(analogRead(A0)>500)&&(analogRead(A0)<750)
 #define JOYPAD_DOWN 0//(analogRead(A3)>=750)&&(analogRead(A3)<950)
 #define JOYPAD_UP  0//(analogRead(A3)>500)&&(analogRead(A3)<750)
-#define JOYPAD_FIRE 1//check_touch()//(digitalRead(1)==0)
+#define JOYPAD_FIRE Keyboard_Event(3)//check_touch()//(digitalRead(1)==0)
 
 void SOUND(uint8_t freq_, uint8_t dur);
 void TINYJOYPAD_INIT(void);
@@ -64,7 +72,7 @@ void VICTORYSOUND(void);
 void ALERTSOUND(void);
 void HAPPYSOUND(void);
 void SPLITDIGITS(uint16_t val, uint8_t *digits);
-int check_touch();
+
 
 // GameLevel: Level, ShipPosX, ShipPosY, Fuel / 100, LevelScore, FuelBonus
 const uint8_t GAMELEVEL [][5]= {
