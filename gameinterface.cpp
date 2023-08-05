@@ -24,8 +24,6 @@
 
 #include "gameinterface.h"
 
-extern int key_board_fb;
-
 void TINYJOYPAD_INIT(void) {
 
 }
@@ -178,6 +176,11 @@ int Keyboard_Init()
 
 int Keyboard_Event(int event_type)
 {
+  int key_board_fb = open(KEYBOARD_DEVICE, O_RDONLY);
+  if (key_board_fb == -1) {
+      perror("Error opening keyboard device");
+      return 1;
+  }
   struct input_event ev;
   read(key_board_fb, &ev, sizeof(struct input_event));
 
