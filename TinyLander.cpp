@@ -399,7 +399,6 @@ void Frame_Buffer_Clear_Part(uint8_t x , uint8_t y)
     //一次给一竖列8bit数据
      for (uint8_t y_pixel = 0; y_pixel < 8; y_pixel++)//解析为单个y_pixel
     {
-        uint8_t data_pixel = (data>>y_pixel)&0x01;
         long location1 = (x * 2 * 2) + ((( (y * 8) + y_pixel) * 2 ) * 640);
         long location2 = (x * 2 * 2 + 1) + ((((y * 8)+y_pixel) * 2 + 1 ) * 640);
         if(data_pixel==1)//此像素点应该被点亮
@@ -465,7 +464,7 @@ void loop() {
   GAME game;
 
 BEGIN:
-  //Frame_Buffer_Clear();//进入界面的时候刷新一下界面
+  Frame_Buffer_Clear();//进入界面的时候刷新一下界面
   game.Level = 1;
   game.Score = 0;
   game.Lives = 4;
@@ -491,7 +490,7 @@ BEGIN:
   }
 
 START:
-  //Frame_Buffer_Clear();//进入界面的时候刷新一下界面
+  Frame_Buffer_Clear();//进入界面的时候刷新一下界面
   initGame(&game);
   //INTROSOUND();
   while (1) {
