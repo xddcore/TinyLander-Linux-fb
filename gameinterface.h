@@ -27,6 +27,10 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <linux/input.h>
+#include <sys/ioctl.h>
+#include <linux/fb.h>
+#include <sys/mman.h>
+#include <math.h>
 
 typedef unsigned char uint8_t;
 typedef unsigned int uint16_t;
