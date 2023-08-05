@@ -475,8 +475,8 @@ START:
   initGame(&game);
   //INTROSOUND();
   while (1) {
+    Frame_Buffer_Clear();//每次移动飞船后都要刷新一下界面
     Keyboard_Event();
-    //Frame_Buffer_Clear();//每次移动飞船后都要刷新一下界面
     fillData(game.Score, &score);
     fillData(game.velocityX, &velX);
     fillData(game.velocityY, &velY);
