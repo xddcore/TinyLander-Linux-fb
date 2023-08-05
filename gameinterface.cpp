@@ -218,3 +218,25 @@ int Keyboard_Event(int event_type)
 
     return key_pressed;
 }
+
+int isSpaceKeyPressed()
+{
+    struct input_event ev;
+
+    // Change file descriptor to non-blocking
+    int flags = fcntl(key_board_fb, F_GETFL, 0);
+    fcntl(key_board_fb, F_SETFL, flags | O_NONBLOCK);
+
+    ssize_t n = read(key_board_fb, &ev, sizeof(struct input_event));
+    if (n == -1 || n == 0) { // Nothing to read or error
+        return 0;
+    }
+
+    if (ev.type == EV_KEY) {
+        if (ev.code == KEY_SPACE) {
+            return ev.value == 1 ? 1 : 0;  // Return 1 if space key pressed, 0 otherwise
+        }
+    }
+
+    return 0;
+}
