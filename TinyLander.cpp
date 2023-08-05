@@ -39,7 +39,7 @@ int fbfd;
 char *fbp=NULL;
 int screensize;
 /*keyboard*/
-extern int key_board_fb;
+//extern int key_board_fb;
 
 void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGITAL * velY);
 void fillData(long myValue, DIGITAL * data);
