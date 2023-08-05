@@ -188,9 +188,11 @@ void Keyboard_Event()
     fcntl(key_board_fb, F_SETFL, flags | O_NONBLOCK);
 
     ssize_t n = read(key_board_fb, &ev, sizeof(struct input_event));
-
+    printf("p1\n");
     if (n == sizeof(struct input_event)) {
+      printf("p2\n");
             if (ev.type == EV_KEY) {
+              printf("p3\n");
                 switch (ev.code) {
                     case KEY_A:
                         A_key_pressed = ev.value;  // Set A_key_pressed to 1 if A key pressed, 0 otherwise
@@ -225,7 +227,7 @@ void Keyboard_Event()
       D_key_pressed=0;
       Space_key_pressed=0;
     }
-
+    printf("p4\n");
     int bytes = 0;
     ioctl(key_board_fb, FIONREAD, &bytes);
     for(int i=0; i<bytes/sizeof(struct input_event); ++i) {
