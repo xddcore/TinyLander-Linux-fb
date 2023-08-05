@@ -169,7 +169,7 @@ int Frame_Buffer_Init()
     fbfd = open(Frame_Buffer_Device, O_RDWR);
     if (fbfd == -1) {
         perror("Error opening framebuffer device");
-        return 1;
+        return -1;
     }
 
     // Get the framebuffer fixed information
@@ -177,14 +177,14 @@ int Frame_Buffer_Init()
     if (ioctl(fbfd, FBIOGET_FSCREENINFO, &finfo)) {
         perror("Error reading fixed information");
         close(fbfd);
-        return 1;
+        return -1;
     }
 
     // Check if the line length matches what we expect (640 bytes)
     if (finfo.line_length != 640) {
         fprintf(stderr, "Unexpected line length: %d\n", finfo.line_length);
         close(fbfd);
-        return 1;
+        return -1;
     }
 
     screensize = finfo.line_length * 240; // 640 bytes per line, 240 lines
@@ -193,8 +193,9 @@ int Frame_Buffer_Init()
     if ((intptr_t)fbp == -1) {
         perror("Error mapping framebuffer device to memory");
         close(fbfd);
-        return 1;
+        return -1;
     }
+    return fbfd;
 }
 //全屏清除，速度慢，会闪屏
 void Frame_Buffer_Clear()
