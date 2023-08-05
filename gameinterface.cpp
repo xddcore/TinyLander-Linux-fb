@@ -184,8 +184,8 @@ void Keyboard_Event()
     struct input_event ev;
 
     // Change file descriptor to non-blocking
-    int flags = fcntl(key_board_fb, F_GETFL, 0);
-    fcntl(key_board_fb, F_SETFL, flags | O_NONBLOCK);
+    //int flags = fcntl(key_board_fb, F_GETFL, 0);
+    //fcntl(key_board_fb, F_SETFL, flags | O_NONBLOCK);
 
     ssize_t n = read(key_board_fb, &ev, sizeof(struct input_event));
     printf("p1\n");
