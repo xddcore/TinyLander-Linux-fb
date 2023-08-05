@@ -222,6 +222,13 @@ void Keyboard_Event()
       Space_key_pressed=0;
     }
     printf("p4\n");
+        int bytes = 0;
+    ioctl(key_board_fb, FIONREAD, &bytes);
+    while(bytes > 0) {
+        // Read and discard the events
+        read(key_board_fb, &ev, sizeof(struct input_event));
+        ioctl(key_board_fb, FIONREAD, &bytes);
+    }
 }
 
 int isSpaceKeyPressed()
