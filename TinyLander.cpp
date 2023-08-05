@@ -401,12 +401,8 @@ void Frame_Buffer_Clear_Part(uint8_t x , uint8_t y)
     {
         long location1 = (x * 2 * 2) + ((( (y * 8) + y_pixel) * 2 ) * 640);
         long location2 = (x * 2 * 2 + 1) + ((((y * 8)+y_pixel) * 2 + 1 ) * 640);
-        if(data_pixel==1)//此像素点应该被点亮
-        //等比例放大2倍
-        {
-            *((unsigned short *)(fbp + location1))= 0x0000;//rgb565 fb
-            *((unsigned short *)(fbp + location2))= 0x0000;//rgb565 fb
-        }
+        *((unsigned short *)(fbp + location1))= 0x0000;//rgb565 fb
+        *((unsigned short *)(fbp + location2))= 0x0000;//rgb565 fb
     } 
 }
 
