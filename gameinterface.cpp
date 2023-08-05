@@ -24,8 +24,10 @@
 
 #include "gameinterface.h"
 
-int key_board_fb= -1;
-
+int key_board_fb = -1;
+int A_key_pressed = 0;
+int D_key_pressed = 0;
+int Space_key_pressed = 0;
 
 void TINYJOYPAD_INIT(void) {
 
