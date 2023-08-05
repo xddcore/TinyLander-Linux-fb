@@ -214,11 +214,13 @@ void Keyboard_Event()
                       A_key_pressed=0;
                       D_key_pressed=0;
                       Space_key_pressed=0;
+                      printf("default no key pressed\n");
                         break;
                 }
             }
         } 
     else{
+      printf("no key pressed\n");
       A_key_pressed=0;
       D_key_pressed=0;
       Space_key_pressed=0;
