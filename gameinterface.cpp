@@ -195,22 +195,16 @@ void Keyboard_Event()
               printf("p3\n");
                 switch (ev.code) {
                     case KEY_A:
-                        A_key_pressed = ev.value;  // Set A_key_pressed to 1 if A key pressed, 0 otherwise
-                        if(ev.value == 1) {
-                            printf("A key pressed\n");
-                        }
+                        A_key_pressed = 1;  // Set A_key_pressed to 1 if A key pressed, 0 otherwise
+                        printf("A key pressed\n");
                         break;
                     case KEY_D:
-                        D_key_pressed = ev.value;  // Set D_key_pressed to 1 if D key pressed, 0 otherwise
-                        if(ev.value == 1) {
-                            printf("D key pressed\n");
-                        }
+                        D_key_pressed = 1;  // Set D_key_pressed to 1 if D key pressed, 0 otherwise
+                        printf("D key pressed\n");
                         break;
                     case KEY_SPACE:
-                        Space_key_pressed = ev.value;  // Set Space_key_pressed to 1 if Space key pressed, 0 otherwise
-                        if(ev.value == 1) {
-                            printf("Space key pressed\n");
-                        }
+                        Space_key_pressed = 1;  // Set Space_key_pressed to 1 if Space key pressed, 0 otherwise
+                        printf("Space key pressed\n");
                         break;
                     default:  // Other key pressed
                       A_key_pressed=0;
@@ -228,14 +222,6 @@ void Keyboard_Event()
       Space_key_pressed=0;
     }
     printf("p4\n");
-    int bytes = 0;
-    ioctl(key_board_fb, FIONREAD, &bytes);
-    for(int i=0; i<bytes/sizeof(struct input_event); ++i) {
-        // Read and discard the events
-        read(key_board_fb, &ev, sizeof(struct input_event));
-    }
-
-
 }
 
 int isSpaceKeyPressed()
