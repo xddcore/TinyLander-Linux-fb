@@ -19,8 +19,9 @@
 //  Daniel C (Electro L.I.B) https://www.tinyjoypad.com under GPLv3
 //  to work with tinyjoypad game console's standard.
 //             
-// the code works at 16MHZ internal
-// and use ssd1306xled Library for SSD1306 oled display 128x64
+// 2023/08/03:xddcore 1034029664@qq.com
+// 修改移植以支持Linux Frame Buffer，以及USB键盘或MPU6050&电容触摸屏的体感控制。
+// 更多详情见README.md
 
 // 'Lunar Lander Sprites', 56x8px
 const unsigned char LANDER []= {

@@ -19,8 +19,10 @@
 //  Daniel C (Electro L.I.B) https://www.tinyjoypad.com under GPLv3
 //  to work with tinyjoypad game console's standard.
 //             
-// the code works at 16MHZ internal
-// and use ssd1306xled Library for SSD1306 oled display 128x64
+// 2023/08/03:xddcore 1034029664@qq.com
+// 修改移植以支持Linux Frame Buffer，以及USB键盘或MPU6050&电容触摸屏的体感控制。
+// 更多详情见README.md
+
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -51,14 +53,17 @@ typedef unsigned int uint16_t;
 
 
 /************控制接口***************/
-#define Touch_Screen_Event "/dev/input/event0"
+/*Frame Buffer*/
+#define Frame_Buffer_Device "/dev/fb0"
+void Frame_Buffer_Clear();//全局刷屏
+void Frame_Buffer_Clear_Part(uint8_t x , uint8_t y, uint8_t data);//局部刷屏，等待实现
+void Frame_Buffer_Flip(uint8_t x , uint8_t y, uint8_t data);//FrameBuffer数据填充
+/*USB键盘*/
 #define KEYBOARD_DEVICE "/dev/input/event1"
-
 int Keyboard_Init();
-int check_touch();
 void Keyboard_Event();
-int isSpaceKeyPressed();
 
+#define KEYBOARD_DEVICE "/dev/input/event1"
 
 extern int A_key_pressed;
 extern int D_key_pressed;

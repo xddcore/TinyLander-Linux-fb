@@ -19,12 +19,20 @@
 //  Daniel C (Electro L.I.B) https://www.tinyjoypad.com under GPLv3
 //  to work with tinyjoypad game console's standard.
 //             
-// the code works at 16MHZ internal
-// and use ssd1306xled Library for SSD1306 oled display 128x64
+// 2023/08/03:xddcore 1034029664@qq.com
+// 修改移植以支持Linux Frame Buffer，以及USB键盘或MPU6050&电容触摸屏的体感控制。
+// 更多详情见README.md
 
 #include "gameinterface.h"
 
+/*Frame Buffer*/
+int frame_buffer_fb = -1;
+char *fbp=NULL;
+int screensize = 0;
+
+/*USB Keyboard*/
 int key_board_fb = -1;
+//0:没按下 1:按下 2:长按
 int A_key_pressed = 0;
 int D_key_pressed = 0;
 int Space_key_pressed = 0;
@@ -148,27 +156,76 @@ void HAPPYSOUND()
   //SOUND(75, 90); _delay_ms(10); SOUND(114, 90); SOUND(121, 90);
 }
 
-/*触摸屏事件接口*/
-int check_touch() {
-    int fd = open(Touch_Screen_Event, O_RDONLY | O_NONBLOCK);
-    if (fd == -1) {
-        perror("Error opening touch device");
-        return -1;
+/*********************************以下为Linux接口**********************************/
+/*Frame Buffer初始化*/
+int Frame_Buffer_Init()
+{
+    int fbfd;
+    fbfd = open(Frame_Buffer_Device, O_RDWR);
+    if (fbfd == -1) {
+        perror("Error opening framebuffer device");
+        return 1;
     }
 
-    struct input_event ev;
-    ssize_t n = read(fd, &ev, sizeof(ev));
-    close(fd);
+    // Get the framebuffer fixed information
+    struct fb_fix_screeninfo finfo;
+    if (ioctl(fbfd, FBIOGET_FSCREENINFO, &finfo)) {
+        perror("Error reading fixed information");
+        close(fbfd);
+        return 1;
+    }
 
-    if (n == sizeof(ev)) {
-        if (ev.type == EV_ABS) {
-            return 1; // 触摸事件
+    // Check if the line length matches what we expect (640 bytes)
+    if (finfo.line_length != 640) {
+        fprintf(stderr, "Unexpected line length: %d\n", finfo.line_length);
+        close(fbfd);
+        return 1;
+    }
+
+    screensize = finfo.line_length * 240; // 640 bytes per line, 240 lines
+
+    fbp = (char *)mmap(0, screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd, 0);
+    if ((intptr_t)fbp == -1) {
+        perror("Error mapping framebuffer device to memory");
+        close(fbfd);
+        return 1;
+    }
+}
+//全屏清除，速度慢，会闪屏
+void Frame_Buffer_Clear()
+{
+    // Clear the screen in RGB565 format
+    for (int y = 0; y < 128; y++) {
+        for (int x = 0; x < 256; x++) {
+            long location = (x * 2) + (y * 640); // 2 bytes per pixel, 640 bytes per line
+            *((unsigned short *)(fbp + location)) = 0x0000;
         }
     }
-
-    return 0; // 没有触摸事件
 }
 
+//静态部分保留，动态部分清除
+void Frame_Buffer_Clear_Part(uint8_t x , uint8_t y, uint8_t data)
+{
+  //待实现
+}
+
+void Frame_Buffer_Flip(uint8_t x , uint8_t y, uint8_t data)
+{
+    //一次给一竖列8bit数据
+     for (uint8_t y_pixel = 0; y_pixel < 8; y_pixel++)//解析为单个y_pixel
+    {
+        uint8_t data_pixel = (data>>y_pixel)&0x01;
+        long location1 = (x * 2 * 2) + ((( (y * 8) + y_pixel) * 2 ) * 640);
+        long location2 = (x * 2 * 2 + 1) + ((((y * 8)+y_pixel) * 2 + 1 ) * 640);
+        if(data_pixel==1)//此像素点应该被点亮
+        //等比例放大2倍
+        {
+            *((unsigned short *)(fbp + location1))= 0xff;//rgb565 fb
+            *((unsigned short *)(fbp + location2))= 0xff;//rgb565 fb
+        }
+    } 
+}
+/*USB键盘初始化*/
 int Keyboard_Init()
 {
     int fd = open(KEYBOARD_DEVICE, O_RDONLY);
@@ -178,14 +235,13 @@ int Keyboard_Init()
     }
     return fd;
 }
-
+/*USB键盘事件处理*/
 void Keyboard_Event()
 {
     struct input_event ev;
     // Change file descriptor to non-blocking
     int flags = fcntl(key_board_fb, F_GETFL, 0);
     fcntl(key_board_fb, F_SETFL, flags | O_NONBLOCK);
-
     ssize_t n;
     //确保实时性，每次读空event缓冲区。
     do {
@@ -196,15 +252,15 @@ void Keyboard_Event()
                 switch (ev.code) {
                     case KEY_A:
                         A_key_pressed = ev.value;  // Set A_key_pressed to 1 if A key pressed, 0 otherwise
-                        printf("A key state: %d\n", A_key_pressed);
+                        //printf("A key state: %d\n", A_key_pressed);
                         break;
                     case KEY_D:
                         D_key_pressed = ev.value;  // Set D_key_pressed to 1 if D key pressed, 0 otherwise
-                        printf("D key state: %d\n", D_key_pressed);
+                        //printf("D key state: %d\n", D_key_pressed);
                         break;
                     case KEY_SPACE:
                         Space_key_pressed = ev.value;  // Set Space_key_pressed to 1 if Space key pressed, 0 otherwise
-                        printf("Space key state: %d\n", Space_key_pressed);
+                        //printf("Space key state: %d\n", Space_key_pressed);
                         break;
                     default:  // Other key pressed
                         break;
@@ -212,24 +268,4 @@ void Keyboard_Event()
             }
         } 
     } while (n > 0);
-}
-
-int isSpaceKeyPressed()
-{
-    struct input_event ev;
-
-    // Make sure file descriptor is blocking
-    int flags = fcntl(key_board_fb, F_GETFL, 0);
-    fcntl(key_board_fb, F_SETFL, flags & ~O_NONBLOCK);
-
-    ssize_t n = read(key_board_fb, &ev, sizeof(struct input_event));
-
-    if (n == sizeof(struct input_event)) {
-        if (ev.type == EV_KEY && ev.code == KEY_SPACE) {
-            printf("Space key pressed\n");
-            return ev.value == 1 ? 1 : 0;  // Return 1 if space key pressed, 0 otherwise
-        }
-    }
-
-    return 0;
 }

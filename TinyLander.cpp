@@ -20,8 +20,8 @@
 //  to work with tinyjoypad game console's standard.
 //             
 // 2023/08/03:xddcore 1034029664@qq.com
-// 修改移植以支持Linux Frame Buffer
-//
+// 修改移植以支持Linux Frame Buffer，以及USB键盘或MPU6050&电容触摸屏的体感控制。
+// 更多详情见README.md
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -36,14 +36,13 @@
 
 extern int key_board_fb;
 /*framebuffer*/
-int fbfd;
-char *fbp=NULL;
-int screensize;
+extern int frame_buffer_fb;
+extern char *fbp=NULL;
+extern int screensize;
 
 void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGITAL * velY);
 void fillData(long myValue, DIGITAL * data);
 uint8_t getLanderSprite(uint8_t x, uint8_t y, GAME * game);
-void Frame_Buffer_Clear();//FB清屏(切换界面后)
 
 void delay(unsigned int us)
 {
@@ -380,41 +379,7 @@ uint8_t LivesDisplay(uint8_t x, uint8_t y, GAME * game)
   }
   return 0x00;
 }
-
-//全屏清除，速度慢，会闪屏
-void Frame_Buffer_Clear()
-{
-    // Clear the screen in RGB565 format
-    for (int y = 0; y < 128; y++) {
-        for (int x = 0; x < 256; x++) {
-            long location = (x * 2) + (y * 640); // 2 bytes per pixel, 640 bytes per line
-            *((unsigned short *)(fbp + location)) = 0x0000;
-        }
-    }
-}
-
-//静态部分保留，动态部分清除
-void Frame_Buffer_Clear_Part(uint8_t x , uint8_t y, uint8_t data)
-{
-  //待实现
-}
-
-void Frame_Buffer_Flip(uint8_t x , uint8_t y, uint8_t data)
-{
-    //一次给一竖列8bit数据
-     for (uint8_t y_pixel = 0; y_pixel < 8; y_pixel++)//解析为单个y_pixel
-    {
-        uint8_t data_pixel = (data>>y_pixel)&0x01;
-        long location1 = (x * 2 * 2) + ((( (y * 8) + y_pixel) * 2 ) * 640);
-        long location2 = (x * 2 * 2 + 1) + ((((y * 8)+y_pixel) * 2 + 1 ) * 640);
-        if(data_pixel==1)//此像素点应该被点亮
-        //等比例放大2倍
-        {
-            *((unsigned short *)(fbp + location1))= 0xff;//rgb565 fb
-            *((unsigned short *)(fbp + location2))= 0xff;//rgb565 fb
-        }
-    } 
-}
+/*绘制图像底层实现*/
 void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGITAL * velY) {
   uint8_t y, x;
   for (y = 0; y < 8; y++)
@@ -516,38 +481,8 @@ START:
 
 int main()
 {
-    fbfd = open("/dev/fb0", O_RDWR);
-    if (fbfd == -1) {
-        perror("Error opening framebuffer device");
-        return 1;
-    }
-
-    // Get the framebuffer fixed information
-    struct fb_fix_screeninfo finfo;
-    if (ioctl(fbfd, FBIOGET_FSCREENINFO, &finfo)) {
-        perror("Error reading fixed information");
-        close(fbfd);
-        return 1;
-    }
-
-    // Check if the line length matches what we expect (640 bytes)
-    if (finfo.line_length != 640) {
-        fprintf(stderr, "Unexpected line length: %d\n", finfo.line_length);
-        close(fbfd);
-        return 1;
-    }
-
-    screensize = finfo.line_length * 240; // 640 bytes per line, 240 lines
-
-    fbp = (char *)mmap(0, screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd, 0);
-    if ((intptr_t)fbp == -1) {
-        perror("Error mapping framebuffer device to memory");
-        close(fbfd);
-        return 1;
-    }
-
+    frame_buffer_fb = Frame_Buffer_Init();
     key_board_fb = Keyboard_Init();
-
     //TINYJOYPAD_INIT();//此处改为电容触摸屏/外接键盘/板载MPU6050/外接按钮驱动
     while(1)
     {
