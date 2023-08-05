@@ -182,53 +182,35 @@ int Keyboard_Init()
 void Keyboard_Event()
 {
     struct input_event ev;
-
     // Change file descriptor to non-blocking
-    //int flags = fcntl(key_board_fb, F_GETFL, 0);
-    //fcntl(key_board_fb, F_SETFL, flags | O_NONBLOCK);
+    int flags = fcntl(key_board_fb, F_GETFL, 0);
+    fcntl(key_board_fb, F_SETFL, flags | O_NONBLOCK);
 
-    ssize_t n = read(key_board_fb, &ev, sizeof(struct input_event));
-    printf("p1\n");
-    if (n == sizeof(struct input_event)) {
-      printf("p2\n");
+    ssize_t n;
+    do {
+        n = read(key_board_fb, &ev, sizeof(struct input_event));
+
+        if (n == sizeof(struct input_event)) {
             if (ev.type == EV_KEY) {
-              printf("p3\n");
                 switch (ev.code) {
                     case KEY_A:
-                        A_key_pressed = 1;  // Set A_key_pressed to 1 if A key pressed, 0 otherwise
-                        printf("A key pressed\n");
+                        A_key_pressed = ev.value;  // Set A_key_pressed to 1 if A key pressed, 0 otherwise
+                        printf("A key state: %d\n", A_key_pressed);
                         break;
                     case KEY_D:
-                        D_key_pressed = 1;  // Set D_key_pressed to 1 if D key pressed, 0 otherwise
-                        printf("D key pressed\n");
+                        D_key_pressed = ev.value;  // Set D_key_pressed to 1 if D key pressed, 0 otherwise
+                        printf("D key state: %d\n", D_key_pressed);
                         break;
                     case KEY_SPACE:
-                        Space_key_pressed = 1;  // Set Space_key_pressed to 1 if Space key pressed, 0 otherwise
-                        printf("Space key pressed\n");
+                        Space_key_pressed = ev.value;  // Set Space_key_pressed to 1 if Space key pressed, 0 otherwise
+                        printf("Space key state: %d\n", Space_key_pressed);
                         break;
                     default:  // Other key pressed
-                      A_key_pressed=0;
-                      D_key_pressed=0;
-                      Space_key_pressed=0;
-                      printf("default no key pressed\n");
                         break;
                 }
             }
         } 
-    else{
-      printf("no key pressed\n");
-      A_key_pressed=0;
-      D_key_pressed=0;
-      Space_key_pressed=0;
-    }
-    printf("p4\n");
-        int bytes = 0;
-    ioctl(key_board_fb, FIONREAD, &bytes);
-    while(bytes > 0) {
-        // Read and discard the events
-        read(key_board_fb, &ev, sizeof(struct input_event));
-        ioctl(key_board_fb, FIONREAD, &bytes);
-    }
+    } while (n > 0);
 }
 
 int isSpaceKeyPressed()
