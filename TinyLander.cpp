@@ -396,19 +396,7 @@ void Frame_Buffer_Clear()
 //静态部分保留，动态部分清除
 void Frame_Buffer_Clear_Part(uint8_t x , uint8_t y, uint8_t data)
 {
-    //一次给一竖列8bit数据
-     for (uint8_t y_pixel = 0; y_pixel < 8; y_pixel++)//解析为单个y_pixel
-    {
-        uint8_t data_pixel = (data>>y_pixel)&0x01;
-        long location1 = (x * 2 * 2) + ((( (y * 8) + y_pixel) * 2 ) * 640);
-        long location2 = (x * 2 * 2 + 1) + ((((y * 8)+y_pixel) * 2 + 1 ) * 640);
-        if(data_pixel==1)//此像素点应该被点亮
-        //等比例放大2倍
-        {
-            *((unsigned short *)(fbp + location1))= 0x0000;//rgb565 fb
-            *((unsigned short *)(fbp + location2))= 0x0000;//rgb565 fb
-        }
-    } 
+  //待实现
 }
 
 void Frame_Buffer_Flip(uint8_t x , uint8_t y, uint8_t data)
@@ -446,7 +434,6 @@ void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGIT
     if (mode == 0 || mode == 2) {
         //munmap(fbp, screensize);
         //close(fbfd);
-        Frame_Buffer_Clear_Part(x,y,GameDisplay(x, y, game));//将屏幕从Y轴方向分成8个page，清除其中一个page
     }
   }
 }
@@ -501,9 +488,9 @@ START:
     fillData(game.velocityY, &velY);
     moveShip(&game);
     changeSpeed(&game);
-    //Frame_Buffer_Clear();//每次移动飞船后都要刷新一下界面
+    Frame_Buffer_Clear();//每次移动飞船后都要刷新一下界面
     Tiny_Flip(0, &game, &score, &velX, &velY);
-    delay(50);
+    delay(10);
     if (game.EndCounter > 8) {
       if (game.HasLanded)
       {
