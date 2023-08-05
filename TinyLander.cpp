@@ -483,7 +483,7 @@ START:
     moveShip(&game);
     changeSpeed(&game);
     Tiny_Flip(0, &game, &score, &velX, &velY);
-    delay(100);
+    delay(30);
     if (game.EndCounter > 8) {
       if (game.HasLanded)
       {
