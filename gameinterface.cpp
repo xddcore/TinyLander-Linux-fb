@@ -188,22 +188,26 @@ int Keyboard_Event(int event_type)
     if (ev.value == 1) { // Key pressed
       switch (ev.code) {
         case KEY_A:
+          close(key_board_fb);
           if(event_type == 1)
            return 1;
           printf("A key pressed\n");
           break;
         case KEY_D:
+          close(key_board_fb);
           if(event_type == 2)
-          return 1;
+           return 1;
           printf("D key pressed\n");
           break;
         case KEY_SPACE:
+          close(key_board_fb);
           if(event_type == 3)
-          return 1;
+           return 1;
           printf("Space key pressed\n");
           break;
       }
     }
   }
+  close(key_board_fb);
   return 0;
 }
