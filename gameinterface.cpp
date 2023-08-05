@@ -178,35 +178,44 @@ int Keyboard_Init()
 
 int Keyboard_Event(int event_type)
 {
-  struct input_event ev;
-  read(key_board_fb, &ev, sizeof(struct input_event));
+    struct input_event ev;
 
-  if (ev.type == EV_KEY) {
-    if (ev.value == 1) { // Key pressed
-      switch (ev.code) {
-        case KEY_A:
-          printf("A key pressed\n");
-          if(event_type == 1)
-           return 1;
-          printf("A key pressed\n");
-          break;
-        case KEY_D:
-          printf("D key pressed\n");
-          if(event_type == 2)
-           return 1;
-          printf("D key pressed\n");
-          break;
-        case KEY_SPACE:
-          printf("Space key pressed\n");
-          if(event_type == 3)
-           return 1;
-          printf("Space key pressed\n");
-          break;
-      }
+    // Change file descriptor to non-blocking
+    int flags = fcntl(key_board_fb, F_GETFL, 0);
+    fcntl(key_board_fb, F_SETFL, flags | O_NONBLOCK);
+
+    ssize_t n = read(key_board_fb, &ev, sizeof(struct input_event));
+    if (n == -1 || n == 0) { // Nothing to read or error
+        printf("0\n");
+        return 0;
     }
-  }
-  else if (ev.value == 0) { // Key released
+
+    if (ev.type == EV_KEY && ev.value == 1) { // Key pressed
+        switch (ev.code) {
+            case KEY_A:
+                if(event_type == 1) {
+                    printf("A key pressed\n");
+                    return 1;
+                }
+                break;
+            case KEY_D:
+                if(event_type == 2) {
+                    printf("D key pressed\n");
+                    return 1;
+                }
+                break;
+            case KEY_SPACE:
+                if(event_type == 3) {
+                    printf("Space key pressed\n");
+                    return 1;
+                }
+                break;
+            default:  // Other key pressed
+                printf("0\n");
+                return 0;
+        }
+    }
+
     printf("0\n");
     return 0;
-  }
 }
