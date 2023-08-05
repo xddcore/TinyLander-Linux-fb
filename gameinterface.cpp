@@ -215,6 +215,12 @@ void Keyboard_Event()
                 }
             }
         } 
+    else{
+      A_key_pressed=0;
+      D_key_pressed=0;
+      Space_key_pressed=0;
+    }
+
 
 }
 
