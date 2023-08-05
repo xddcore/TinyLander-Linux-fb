@@ -205,5 +205,8 @@ int Keyboard_Event(int event_type)
       }
     }
   }
-  return 0;
+  else if (ev.value == 0) { // Key released
+    printf("0\n");
+    return 0;
+  }
 }
