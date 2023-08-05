@@ -60,10 +60,9 @@ void Keyboard_Event()
 int isSpaceKeyPressed();
 
 
-int key_board_fb=-1;
-int A_key_pressed = 0;
-int D_key_pressed = 0;
-int Space_key_pressed = 0;
+extern int A_key_pressed = 0;
+extern int D_key_pressed = 0;
+extern int Space_key_pressed = 0;
 
 #define JOYPAD_LEFT  A_key_pressed//(analogRead(A0)>=750)&&(analogRead(A0)<950)
 #define JOYPAD_RIGHT D_key_pressed//(analogRead(A0)>500)&&(analogRead(A0)<750)
