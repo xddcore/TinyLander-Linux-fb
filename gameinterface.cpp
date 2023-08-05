@@ -224,6 +224,13 @@ void Keyboard_Event()
       Space_key_pressed=0;
     }
 
+    int bytes = 0;
+    ioctl(key_board_fb, FIONREAD, &bytes);
+    for(int i=0; i<bytes/sizeof(struct input_event); ++i) {
+        // Read and discard the events
+        read(key_board_fb, &ev, sizeof(struct input_event));
+    }
+
 
 }
 
