@@ -451,6 +451,7 @@ BEGIN:
   game.Lives = 4;
   while (1) {
     Tiny_Flip(1, &game, &score, &velX, &velY);
+    Keyboard_Event();
     if (Space_key_pressed) {//开始游戏按钮 digitalRead(1) == 0
       if (JOYPAD_UP){ 
         game.Level = 10;
