@@ -181,17 +181,13 @@ int Keyboard_Init()
 
 void Keyboard_Event()
 {
-    int fd = open(KEYBOARD_DEVICE, O_RDONLY);
-    if (fd == -1) {
-      perror("Error opening keyboard device");
-    }
     struct input_event ev;
 
     // Change file descriptor to non-blocking
-    int flags = fcntl(fd, F_GETFL, 0);
-    fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+    int flags = fcntl(key_board_fb, F_GETFL, 0);
+    fcntl(key_board_fb, F_SETFL, flags | O_NONBLOCK);
 
-    ssize_t n = read(fd, &ev, sizeof(struct input_event));
+    ssize_t n = read(key_board_fb, &ev, sizeof(struct input_event));
 
     if (n == sizeof(struct input_event)) {
             if (ev.type == EV_KEY) {
@@ -227,8 +223,6 @@ void Keyboard_Event()
       D_key_pressed=0;
       Space_key_pressed=0;
     }
-
-    close(fd);
 
 
 }
