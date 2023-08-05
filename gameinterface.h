@@ -59,11 +59,11 @@ int check_touch();
 int Keyboard_Event(int event_type);
 
 
-#define JOYPAD_LEFT  Keyboard_Event(1)//(analogRead(A0)>=750)&&(analogRead(A0)<950)
-#define JOYPAD_RIGHT Keyboard_Event(2)//(analogRead(A0)>500)&&(analogRead(A0)<750)
+#define JOYPAD_LEFT  ((Keyboard_Event(1)==1)?1:0)//(analogRead(A0)>=750)&&(analogRead(A0)<950)
+#define JOYPAD_RIGHT ((Keyboard_Event(2)==2)?1:0)//(analogRead(A0)>500)&&(analogRead(A0)<750)
 #define JOYPAD_DOWN 0//(analogRead(A3)>=750)&&(analogRead(A3)<950)
 #define JOYPAD_UP  0//(analogRead(A3)>500)&&(analogRead(A3)<750)
-#define JOYPAD_FIRE Keyboard_Event(3)//check_touch()//(digitalRead(1)==0)
+#define JOYPAD_FIRE ((Keyboard_Event(3)==3)?1:0)//check_touch()//(digitalRead(1)==0)
 
 void SOUND(uint8_t freq_, uint8_t dur);
 void TINYJOYPAD_INIT(void);

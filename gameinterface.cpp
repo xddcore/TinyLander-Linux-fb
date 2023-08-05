@@ -25,6 +25,7 @@
 #include "gameinterface.h"
 
 int key_board_fb=-1;
+int key_pressed = 0;
 
 void TINYJOYPAD_INIT(void) {
 
@@ -185,37 +186,35 @@ int Keyboard_Event(int event_type)
     fcntl(key_board_fb, F_SETFL, flags | O_NONBLOCK);
 
     ssize_t n = read(key_board_fb, &ev, sizeof(struct input_event));
-    if (n == -1 || n == 0) { // Nothing to read or error
-        printf("0\n");
-        return 0;
-    }
 
     if (ev.type == EV_KEY && ev.value == 1) { // Key pressed
         switch (ev.code) {
             case KEY_A:
                 if(event_type == 1) {
                     printf("A key pressed\n");
-                    return 1;
+                    key_pressed = 1;
                 }
                 break;
             case KEY_D:
                 if(event_type == 2) {
                     printf("D key pressed\n");
-                    return 1;
+                    key_pressed = 2;
                 }
                 break;
             case KEY_SPACE:
                 if(event_type == 3) {
                     printf("Space key pressed\n");
-                    return 1;
+                    key_pressed = 3;
                 }
                 break;
             default:  // Other key pressed
-                printf("0\n");
-                return 0;
+                key_pressed = 0;
         }
     }
 
-    printf("0\n");
-    return 0;
+    if (ev.type == EV_KEY && ev.value == 0) { // Key released
+        key_pressed = 0;
+    }
+
+    return key_pressed;
 }
