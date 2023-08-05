@@ -187,9 +187,10 @@ void Keyboard_Event()
     fcntl(key_board_fb, F_SETFL, flags | O_NONBLOCK);
 
     ssize_t n;
+    //确保实时性，每次读空event缓冲区。
     do {
         n = read(key_board_fb, &ev, sizeof(struct input_event));
-
+        //ev.value： 0-按键没按下 1-按键按下 2-按键长按
         if (n == sizeof(struct input_event)) {
             if (ev.type == EV_KEY) {
                 switch (ev.code) {
