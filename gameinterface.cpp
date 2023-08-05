@@ -157,6 +157,11 @@ void HAPPYSOUND()
 }
 
 /*********************************以下为Linux接口**********************************/
+//Linux ms延迟移植
+void delay(unsigned int ms)
+{
+    usleep(ms * 1000);
+}
 /*Frame Buffer初始化*/
 int Frame_Buffer_Init()
 {

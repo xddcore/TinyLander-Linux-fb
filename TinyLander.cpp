@@ -23,32 +23,18 @@
 // 修改移植以支持Linux Frame Buffer，以及USB键盘或MPU6050&电容触摸屏的体感控制。
 // 更多详情见README.md
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
-#include <linux/fb.h>
-#include <sys/mman.h>
-#include <stdio.h>
-#include <math.h>
-
 #include "spritebank.h"
 #include "gameinterface.h"
 
 extern int key_board_fb;
 /*framebuffer*/
 extern int frame_buffer_fb;
-extern char *fbp=NULL;
+extern char *fbp;
 extern int screensize;
 
 void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGITAL * velY);
 void fillData(long myValue, DIGITAL * data);
 uint8_t getLanderSprite(uint8_t x, uint8_t y, GAME * game);
-
-void delay(unsigned int us)
-{
-    usleep(us * 1000);
-}
-
 
 void initGame (GAME * game)
 {

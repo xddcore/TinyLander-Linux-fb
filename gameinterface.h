@@ -56,9 +56,11 @@ typedef unsigned int uint16_t;
 
 
 
-/************控制接口***************/
+/************Linux控制接口***************/
+void delay(unsigned int ms);
 /*Frame Buffer*/
 #define Frame_Buffer_Device "/dev/fb0"
+int Frame_Buffer_Init();//初始化Frame Buffer
 void Frame_Buffer_Clear();//全局刷屏
 void Frame_Buffer_Clear_Part(uint8_t x , uint8_t y, uint8_t data);//局部刷屏，等待实现
 void Frame_Buffer_Flip(uint8_t x , uint8_t y, uint8_t data);//FrameBuffer数据填充
@@ -78,6 +80,7 @@ extern int Space_key_pressed;
 #define JOYPAD_DOWN 0//(analogRead(A3)>=750)&&(analogRead(A3)<950)
 #define JOYPAD_UP  0//(analogRead(A3)>500)&&(analogRead(A3)<750)
 #define JOYPAD_FIRE Space_key_pressed//check_touch()//(digitalRead(1)==0)
+
 
 void SOUND(uint8_t freq_, uint8_t dur);
 void TINYJOYPAD_INIT(void);
