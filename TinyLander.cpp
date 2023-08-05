@@ -34,6 +34,7 @@
 #include "spritebank.h"
 #include "gameinterface.h"
 
+extern int key_board_fb;
 /*framebuffer*/
 int fbfd;
 char *fbp=NULL;
