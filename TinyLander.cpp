@@ -475,6 +475,7 @@ START:
   initGame(&game);
   //INTROSOUND();
   while (1) {
+    Keyboard_Event();
     fillData(game.Score, &score);
     fillData(game.velocityX, &velX);
     fillData(game.velocityY, &velY);
