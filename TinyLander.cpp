@@ -38,6 +38,8 @@
 int fbfd;
 char *fbp=NULL;
 int screensize;
+/*keyboard*/
+extern int key_board_fb;
 
 void Tiny_Flip(uint8_t mode, GAME * game, DIGITAL * score, DIGITAL * velX, DIGITAL * velY);
 void fillData(long myValue, DIGITAL * data);
@@ -536,6 +538,8 @@ int main()
         close(fbfd);
         return 1;
     }
+
+    key_board_fb = Keyboard_Init();
 
     //TINYJOYPAD_INIT();//此处改为电容触摸屏/外接键盘/板载MPU6050/外接按钮驱动
     while(1)

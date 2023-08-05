@@ -54,7 +54,7 @@ typedef unsigned int uint16_t;
 #define Touch_Screen_Event "/dev/input/event0"
 #define KEYBOARD_DEVICE "/dev/input/event1"
 
-extern int key_board_fb;
+int key_board_fb;
 int Keyboard_Init();
 int check_touch();
 int Keyboard_Event(int event_type);
