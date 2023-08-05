@@ -207,11 +207,12 @@ void Keyboard_Event()
             break;
         }
     }
-    if (n != sizeof(struct input_event))
+    else
     {
       A_key_pressed = 0;
       D_key_pressed = 0;
       Space_key_pressed = 0;
+      printf("no key pressed\n");
     }
 
 }
