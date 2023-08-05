@@ -475,6 +475,7 @@ START:
   initGame(&game);
   //INTROSOUND();
   while (1) {
+    Keyboard_Event();
     fillData(game.Score, &score);
     fillData(game.velocityX, &velX);
     fillData(game.velocityY, &velY);
@@ -482,7 +483,6 @@ START:
     changeSpeed(&game);
     Frame_Buffer_Clear();//每次移动飞船后都要刷新一下界面
     Tiny_Flip(0, &game, &score, &velX, &velY);
-    Keyboard_Event();
     delay(10);
     if (game.EndCounter > 8) {
       if (game.HasLanded)
