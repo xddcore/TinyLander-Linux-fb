@@ -189,31 +189,32 @@ void Keyboard_Event()
 
     ssize_t n = read(key_board_fb, &ev, sizeof(struct input_event));
 
-    if (ev.type == EV_KEY && ev.value == 1) { // Key pressed
-        switch (ev.code) {
-            case KEY_A:
-                printf("A key pressed\n");
-                A_key_pressed = 1;
-                break;
-            case KEY_D:
-                printf("D key pressed\n");
-                D_key_pressed = 1;
-                break;
-            case KEY_SPACE:
-                printf("Space key pressed\n");
-                Space_key_pressed = 1;
-                break;
-            default:  // Other key pressed
-            break;
-        }
-    }
-    else
-    {
-      A_key_pressed = 0;
-      D_key_pressed = 0;
-      Space_key_pressed = 0;
-      printf("no key pressed\n");
-    }
+    if (n == sizeof(struct input_event)) {
+            if (ev.type == EV_KEY) {
+                switch (ev.code) {
+                    case KEY_A:
+                        A_key_pressed = ev.value;  // Set A_key_pressed to 1 if A key pressed, 0 otherwise
+                        if(ev.value == 1) {
+                            printf("A key pressed\n");
+                        }
+                        break;
+                    case KEY_D:
+                        D_key_pressed = ev.value;  // Set D_key_pressed to 1 if D key pressed, 0 otherwise
+                        if(ev.value == 1) {
+                            printf("D key pressed\n");
+                        }
+                        break;
+                    case KEY_SPACE:
+                        Space_key_pressed = ev.value;  // Set Space_key_pressed to 1 if Space key pressed, 0 otherwise
+                        if(ev.value == 1) {
+                            printf("Space key pressed\n");
+                        }
+                        break;
+                    default:  // Other key pressed
+                        break;
+                }
+            }
+        } 
 
 }
 
