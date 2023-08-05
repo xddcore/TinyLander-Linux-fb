@@ -204,6 +204,7 @@ void Keyboard_Event()
                 Space_key_pressed = 1;
                 break;
             default:  // Other key pressed
+            break;
         }
     }
     if (n != sizeof(struct input_event))
