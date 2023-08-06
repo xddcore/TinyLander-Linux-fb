@@ -411,11 +411,11 @@ BEGIN:
     Tiny_Flip(1, &game, &score, &velX, &velY);
     Keyboard_Event();
     if (Space_key_pressed) {//开始游戏按钮 digitalRead(1) == 0
-      if (JOYPAD_UP){ 
+      if (JOYPAD_UP){ //最难模式开关
         game.Level = 10;
         //ALERTSOUND();
       }
-      else if (1) {
+      else if (JOYPAD_DOWN) {//无敌模式开关
         game.Lives = 255;
         //ALERTSOUND();
       }

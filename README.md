@@ -2,7 +2,7 @@
  * @Author: Chengsen Dong 1034029664@qq.com
  * @Date: 2023-08-03 13:23:03
  * @LastEditors: Chengsen Dong 1034029664@qq.com
- * @LastEditTime: 2023-08-05 15:31:05
+ * @LastEditTime: 2023-08-05 22:43:13
  * @FilePath: /TinyLander-Linux-fb/README.md
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -26,11 +26,11 @@ Tiny Lander like Lunar Lander for linux frame buffer
 
 **控制方式**:     
 
-1. 体感控制模式
+1. 体感控制模式     
 左侧喷气, 右侧喷气: MPU6050角度体感控制     
 喷射向上: 点击触摸屏任意位置    
 
-2. USB键盘控制模式
+2. USB键盘控制模式      
 左侧喷气, 右侧喷气: `A`, `D`     
 喷射向上: `Space` 
 
