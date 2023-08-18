@@ -441,7 +441,7 @@ START:
     changeSpeed(&game);
     Frame_Buffer_Clear();//每次移动飞船后都要刷新一下界面
     Tiny_Flip(0, &game, &score, &velX, &velY);
-    delay(10);
+    delay(30);
     if (game.EndCounter > 8) {
       if (game.HasLanded)
       {
