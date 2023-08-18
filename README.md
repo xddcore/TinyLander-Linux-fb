@@ -2,7 +2,7 @@
  * @Author: Chengsen Dong 1034029664@qq.com
  * @Date: 2023-08-03 13:23:03
  * @LastEditors: Chengsen Dong 1034029664@qq.com
- * @LastEditTime: 2023-08-05 22:43:13
+ * @LastEditTime: 2023-08-18 19:09:23
  * @FilePath: /TinyLander-Linux-fb/README.md
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -46,6 +46,8 @@ g++ -o TinyLander gameinterface.cpp TinyLander.cpp
 ```
 3. 运行
 ```
+#切换USB为HOST模式
+echo host > /sys/devices/platform/soc/1c13000.usb/musb-hdrc.1.auto/mode
 echo -e "\033[?25l" > /dev/tty1 #关闭光标
 stty -echo #关闭tty1回显，避免影响游戏
 ./TinyLander
